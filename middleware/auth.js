@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
-import config from "config";
 
-const tokenSecret = config.get("TOKEN_SECRET");
+const tokenSecret = process.env.TOKEN_SECRET;
 
 export const verifyToken = async (req, res, next) => {
   try {

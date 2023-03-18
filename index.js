@@ -7,7 +7,6 @@ import multer from "multer";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
-import config from "config";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
@@ -15,9 +14,6 @@ import postRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
 import { verifyToken } from "./middleware/auth.js";
 import { createPost } from "./controllers/posts.js";
-import User from "./models/user.js";
-import Post from "./models/Post.js";
-import { users, posts } from "./data/index.js";
 
 // configuration
 const __fileName = fileURLToPath(import.meta.url);
@@ -53,8 +49,7 @@ app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 
 // Mogoose setup
-const port = process.env.PORT || 6001;
-const db = config.get("MONGO_URL");
+const db = process.env.MONGO_URL;
 mongoose.set("strictQuery", false);
 mongoose
   .connect(db, {
@@ -62,7 +57,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(port, () => console.log(`server is running on port ${port}`));
+    app.listen(3001, () => console.log(`server is running on port 3001`));
     // Add data one time
 
     // User.insertMany(users);

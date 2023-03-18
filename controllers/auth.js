@@ -1,9 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
-import config from "config";
 
-const tokenSecret = config.get("TOKEN_SECRET");
+const tokenSecret = process.env.TOKEN_SECRET;
 //  Refister user
 export const register = async (req, res) => {
   try {
