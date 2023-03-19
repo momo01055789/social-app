@@ -47,6 +47,9 @@ app.post("/posts", verifyToken, upload.single("picture"), createPost);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/", (req, res) => {
+  res.send("Hello from node");
+});
 
 // Mogoose setup
 const db = process.env.MONGO_URL;
