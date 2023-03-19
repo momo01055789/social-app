@@ -21,7 +21,7 @@ const Friend = ({ friendId, name, subtitle, userpicPath }) => {
   const isFriend = friends.find((friend) => friend._id === friendId);
   const patchFriend = async () => {
     const response = await fetch(
-      `http://localhost:3001/users/${_id}/${friendId}`,
+      `https://social-app-m8sl.onrender.com/users/${_id}/${friendId}`,
       {
         method: "PATCH",
         headers: {
