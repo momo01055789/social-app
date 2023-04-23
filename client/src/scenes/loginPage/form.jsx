@@ -48,6 +48,7 @@ const initialValuesLogin = {
 
 const Form = () => {
   const [pageType, setPageType] = useState("login");
+  const [error, setError] = useState("");
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -79,30 +80,29 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch(
-      "https://social-app-m8sl.onrender.com/auth/login",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      }
-    );
+    const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
     const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
+    if (!loggedIn.msg) {
       dispatch(
         setLogin({
           user: loggedIn.user,
           token: loggedIn.token,
         })
       );
+      onSubmitProps.resetForm();
       navigate("/home");
+    } else {
+      setError(loggedIn.msg);
     }
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
-    if (isRegister) await register(values, onSubmitProps);
+    if (isRegister) register(values, onSubmitProps);
   };
 
   return (
@@ -211,7 +211,6 @@ const Form = () => {
                 </Box>
               </>
             )}
-
             <TextField
               label="Email"
               onBlur={handleBlur}
@@ -233,6 +232,19 @@ const Form = () => {
               helperText={touched.password && errors.password}
               sx={{ gridColumn: "span 4" }}
             />
+            {error && (
+              <h5
+                style={{
+                  fontSize: "1.8ch",
+                  color: "red",
+                  width: "max-content",
+                  fontWeight: 400,
+                  margin: 0,
+                }}
+              >
+                {error}
+              </h5>
+            )}
           </Box>
 
           {/* BUTTONS */}

@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const tokenSecret = process.env.TOKEN_SECRET;
 //  Refister user
@@ -46,7 +49,7 @@ export const login = async (req, res) => {
     if (!user) return res.status(400).json({ msg: "user was not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) res.status(400).json({ msg: "invalid credentials" });
+    if (!isMatch) return res.status(400).json({ msg: "invalid credentials" });
 
     const token = jwt.sign({ id: user._id }, tokenSecret);
     delete user.password;
