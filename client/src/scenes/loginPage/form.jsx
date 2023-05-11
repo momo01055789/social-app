@@ -49,6 +49,7 @@ const initialValuesLogin = {
 const Form = () => {
   const [pageType, setPageType] = useState("login");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,11 +72,12 @@ const Form = () => {
         body: formData,
       }
     );
+    setLoading(true);
     const savedUser = await savedUserResponse.json();
     onSubmitProps.resetForm();
-
     if (savedUser) {
       setPageType("login");
+      setLoading(false);
     }
   };
 
@@ -252,6 +254,7 @@ const Form = () => {
 
           {/* BUTTONS */}
           <Box>
+            {loading && <h4>Loading....</h4>}
             <Button
               fullWidth
               type="submit"
